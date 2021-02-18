@@ -9,15 +9,20 @@ import java.util.Scanner;
 public class BattleshipMachine
 {
     public static Scanner userScan = new Scanner(System.in);
-    public static String[][] board = new String [5][5];
-    public static String[][] hiddenBoard = new String [5][5];
     public static boolean repeat = true;
     public static int i;
     public static int row;
     public static int column;
     public static int direction;
-
+    public static int start;
     
+    //Size bounds:
+    public static int s = 0;
+    public static int f = 5;
+    
+    public static String[][] board = new String [f][f];
+    public static String[][] hiddenBoard = new String [f][f];
+    public static String[][] key = new String [f][f];
     static void clear() {
         System.out.print('\u000C');
     }
@@ -43,8 +48,8 @@ public class BattleshipMachine
     }
     
     static String[][] createBoard() {
-        for (int r = 0; r < 5; r++) {
-            for (int c = 0; c < 5; c++) {
+        for (int r = s; r < f; r++) {
+            for (int c = s; c < f; c++) {
                 board[r][c] = "     ";
             }
         }
@@ -53,18 +58,33 @@ public class BattleshipMachine
     }
     
     static String[][] createHidden() {
-        for (int r = 0; r < 5; r++) {
-            for (int c = 0; c < 5; c++) {
+        for (int r = s; r < f; r++) {
+            for (int c = s; c < f; c++) {
                 hiddenBoard[r][c] = " ";
             }
         }
         
         return hiddenBoard;
     }
-
+    
+    //Work in progress
+    static String[][] createKey() {
+        int n = 1;
+        int g = 1;
+        for (int r = s; r < f; r++) {
+            for (int c = s; c < f; c++) {
+                key[r][c] = "(" + n + "," + g + ")";
+                n++;
+            }
+            g++;
+        }
+        
+        return key;
+    }
+    
     static void printBoard() {
-        for (int r = 0; r < 5; r++) {
-            for (int c = 0; c < 5; c++) {
+        for (int r = s; r < f; r++) {
+            for (int c = s; c < f; c++) {
                 System.out.print("[" + board[r][c] + "]");
             }
             System.out.println();
@@ -72,10 +92,19 @@ public class BattleshipMachine
     }
     
     static void printHidden() {
-        clear();
-        for (int r = 0; r < 5; r++) {
-            for (int c = 0; c < 5; c++) {
+        for (int r = s; r < f; r++) {
+            for (int c = s; c < f; c++) {
                 System.out.print("[" + hiddenBoard[r][c] + "]");
+            }
+            System.out.println();
+        }
+    }
+    
+    //Work in progress
+    static void printKey() {
+        for (int r = s; r < f; r++) {
+            for (int c = s; c < f; c++) {
+                System.out.print("[" + key[r][c] + "]");
             }
             System.out.println();
         }
@@ -83,21 +112,24 @@ public class BattleshipMachine
     
     static void spawnShip() {
         createHidden();
-        int min = 0;
-        int max = 4;
+        int min = s;
+        int max = f - 1;
+        int length = f - 5;
         //Row & Column
         row = (int)(Math.random() * (max - min + 1) + min);
         column = (int)(Math.random() * (max - min + 1) + min);
         //Verticle or Horizonal
         direction = (int)(Math.random() * (1 - 0 + 1) + 0);
+        //Start position
+        start = (int)(Math.random() * (length - s + 1) + s);
         //Inputs position
         if (direction == 0) {
-            for (int r = 0; r < 5; r++) {
+            for (int r = start; r < 5; r++) {
                 hiddenBoard[r][column] = "X";
             }
         }
         else if (direction == 1) {
-            for (int c = 0; c < 5; c++) {
+            for (int c = start; c < 5; c++) {
                 hiddenBoard[row][c] = "X";
             }
         }
@@ -125,16 +157,19 @@ public class BattleshipMachine
             int temp = userScan.nextInt();
         }
         i++;
-        printBoard();   
+        printBoard();
+        //printKey();
     }
     
     static void fireControl() {
         printBoard();
+        //printKey();
         do {
             firer();
         }
         //essentially any X exists
-        while (hiddenBoard[0][column].equals("X") || hiddenBoard[1][column].equals("X")
+        while 
+        (hiddenBoard[0][column].equals("X") || hiddenBoard[1][column].equals("X")
         || hiddenBoard[2][column].equals("X") || hiddenBoard[3][column].equals("X") 
         || hiddenBoard[4][column].equals("X") || hiddenBoard[row][0].equals("X") 
         || hiddenBoard[row][1].equals("X") || hiddenBoard[row][2].equals("X") 
@@ -145,13 +180,12 @@ public class BattleshipMachine
     }
     
     public static void main(String[] args) {
-        
         do {  
             i = 0;
             rules();
             createBoard();
             spawnShip();
-            
+            clear();
             fireControl();
             //repeater
             System.out.print("Would you like to play again? (true/false): ");
