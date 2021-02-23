@@ -18,7 +18,7 @@ public class BattleshipMachine
     
     //Size bounds:
     public static int s = 0;
-    public static int f = 5;
+    public static int f = 9;
     
     public static String[][] board = new String [f][f];
     public static String[][] hiddenBoard = new String [f][f];
@@ -54,6 +54,27 @@ public class BattleshipMachine
             }
         }
         
+        //manual edge inclusion
+        board[0][0] = " Key ";
+        //top
+        board[0][1] = "  1  ";
+        board[0][2] = "  2  ";
+        board[0][3] = "  3  ";
+        board[0][4] = "  4  ";
+        board[0][5] = "  5  ";
+        board[0][6] = "  6  ";
+        board[0][7] = "  7  ";
+        board[0][8] = "  8  ";
+        //side
+        board[1][0] = "  1  ";
+        board[2][0] = "  2  ";
+        board[3][0] = "  3  ";
+        board[4][0] = "  4  ";
+        board[5][0] = "  5  ";
+        board[6][0] = "  6  ";
+        board[7][0] = "  7  ";
+        board[8][0] = "  8  ";
+        
         return board;
     }
     
@@ -65,21 +86,6 @@ public class BattleshipMachine
         }
         
         return hiddenBoard;
-    }
-    
-    //Work in progress
-    static String[][] createKey() {
-        int n = 1;
-        int g = 1;
-        for (int r = s; r < f; r++) {
-            for (int c = s; c < f; c++) {
-                key[r][c] = "(" + n + "," + g + ")";
-                n++;
-            }
-            g++;
-        }
-        
-        return key;
     }
     
     static void printBoard() {
@@ -100,16 +106,6 @@ public class BattleshipMachine
         }
     }
     
-    //Work in progress
-    static void printKey() {
-        for (int r = s; r < f; r++) {
-            for (int c = s; c < f; c++) {
-                System.out.print("[" + key[r][c] + "]");
-            }
-            System.out.println();
-        }
-    }
-    
     static void spawnShip() {
         createHidden();
         int min = s;
@@ -121,15 +117,15 @@ public class BattleshipMachine
         //Verticle or Horizonal
         direction = (int)(Math.random() * (1 - 0 + 1) + 0);
         //Start position
-        start = (int)(Math.random() * (length - s + 1) + s);
+        start = (int)(Math.random() * (length - (s + 1) + 1) + s);
         //Inputs position
         if (direction == 0) {
-            for (int r = start; r < 5; r++) {
+            for (int r = start; r < (start + 5); r++) {
                 hiddenBoard[r][column] = "X";
             }
         }
         else if (direction == 1) {
-            for (int c = start; c < 5; c++) {
+            for (int c = start; c < (start + 5); c++) {
                 hiddenBoard[row][c] = "X";
             }
         }
@@ -142,14 +138,14 @@ public class BattleshipMachine
         System.out.print("y-coordinate fire position: ");
         int x = userScan.nextInt();
         clear();
-        if (hiddenBoard[x-1][y-1].equals("X")) {
+        if (hiddenBoard[x][y].equals("X")) {
             System.out.println("Last Shot: Hit!");
-            hiddenBoard[x-1][y-1] = "F";
-            board[x-1][y-1] = " Hit ";
+            hiddenBoard[x][y] = "F";
+            board[x][y] = " Hit ";
         }
-        else if (hiddenBoard[x-1][y-1].equals(" ")) {
+        else if (hiddenBoard[x][y].equals(" ")) {
             System.out.println("Last Shot: Miss!");
-            board[x-1][y-1] = "Empty";
+            board[x][y] = "Empty";
         }
         else {
             System.out.println("Error");
@@ -171,9 +167,13 @@ public class BattleshipMachine
         while 
         (hiddenBoard[0][column].equals("X") || hiddenBoard[1][column].equals("X")
         || hiddenBoard[2][column].equals("X") || hiddenBoard[3][column].equals("X") 
-        || hiddenBoard[4][column].equals("X") || hiddenBoard[row][0].equals("X") 
+        || hiddenBoard[4][column].equals("X") || hiddenBoard[5][column].equals("X") 
+        || hiddenBoard[6][column].equals("X") || hiddenBoard[7][column].equals("X") 
+        || hiddenBoard[8][column].equals("X") || hiddenBoard[row][0].equals("X") 
         || hiddenBoard[row][1].equals("X") || hiddenBoard[row][2].equals("X") 
-        || hiddenBoard[row][3].equals("X") || hiddenBoard[row][4].equals("X"));
+        || hiddenBoard[row][3].equals("X") || hiddenBoard[row][4].equals("X")
+        || hiddenBoard[row][5].equals("X") || hiddenBoard[row][6].equals("X")
+        || hiddenBoard[row][7].equals("X") || hiddenBoard[row][8].equals("X"));
         clear();
         System.out.println("You have sunken the enemy Battleship in " + i + " turns");
         System.out.println("GAME OVER");
