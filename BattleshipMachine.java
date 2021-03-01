@@ -16,6 +16,20 @@ public class BattleshipMachine
     public static int direction;
     public static int start;
     
+    //Ship hit counters
+    public static int carrierCount;
+    public static int battleCount;
+    public static int subCount;
+    public static int destroyerCount;
+    public static int patrolCount;
+    
+    //Ship health checkers
+    public static String carrierStatus;
+    public static String battleStatus;
+    public static String subStatus;
+    public static String destroyerStatus;
+    public static String patrolStatus;
+    
     //Size bounds:
     public static int s = 0;
     public static int f = 9;
@@ -106,10 +120,61 @@ public class BattleshipMachine
         }
     }
     
-    static void spawnShip() {
+    static void printList() {
+        if (carrierCount == 5) {
+            carrierStatus = "Dead";
+            System.out.println("Carriership:");
+            System.out.println("[X][X][X][X][X]");
+        }
+        else {
+            System.out.println("Carriership:");
+            System.out.println("[ ][ ][ ][ ][ ]");
+        }
+        if (battleCount == 4) {
+            battleStatus = "Dead";
+            System.out.println("Battleship:");
+            System.out.println("[X][X][X][X]");
+        }
+        else {
+            System.out.println("Battleship:");
+            System.out.println("[ ][ ][ ][ ]");
+        }
+        if (subCount == 3) {
+            subStatus = "Dead";
+            System.out.println("Submarine:");
+            System.out.println("[X][X][X]");
+        }
+        else {
+            System.out.println("Submarine:");
+            System.out.println("[ ][ ][ ]");
+        }
+        if (destroyerCount == 3) {
+            destroyerStatus = "Dead";
+            System.out.println("Destroyer:");
+            System.out.println("[X][X][X]");
+        }
+        else {
+            System.out.println("Destroyer:");
+            System.out.println("[ ][ ][ ]");
+        }
+        if (patrolCount == 2) {
+            patrolStatus = "Dead";
+            System.out.println("Patrol Boat:");
+            System.out.println("[X][X]");
+        }
+        else {
+            System.out.println("Patrol Boat:");
+            System.out.println("[ ][ ]");
+        }
+    }
+    
+    static void spawnShips() {
         createHidden();
-        int min = s;
-        int max = f - 1;
+        
+        //Carrier
+        
+        int min = 1;
+        int max = 3;
         int length = f - 5;
         //Row & Column
         row = (int)(Math.random() * (max - min + 1) + min);
@@ -117,20 +182,110 @@ public class BattleshipMachine
         //Verticle or Horizonal
         direction = (int)(Math.random() * (1 - 0 + 1) + 0);
         //Start position
-        start = (int)(Math.random() * (length - (s + 1) + 1) + s);
+        start = 1; //(int)(Math.random() * (length - (s + 1) + 1) + s);
         //Inputs position
         if (direction == 0) {
             for (int r = start; r < (start + 5); r++) {
-                hiddenBoard[r][column] = "X";
+                hiddenBoard[r][column] = "C";
             }
         }
         else if (direction == 1) {
             for (int c = start; c < (start + 5); c++) {
+                hiddenBoard[row][c] = "C";
+            }
+        }
+        
+        //Battleship
+        
+        int min2 = 6;
+        int max2 = 7;
+        //Row & Column
+        row = (int)(Math.random() * (max2 - min2 + 1) + min2);
+        column = (int)(Math.random() * (max2 - min2 + 1) + min2);
+        //Verticle or Horizonal
+        direction = (int)(Math.random() * (1 - 0 + 1) + 0);
+        //Start position
+        start = 1; //(int)(Math.random() * (length - (s + 1) + 1) + s);
+        //Inputs position
+        if (direction == 0) {
+            for (int r = start; r < (start + 4); r++) {
+                hiddenBoard[r][column] = "X";
+            }
+        }
+        else if (direction == 1) {
+            for (int c = start; c < (start + 4); c++) {
                 hiddenBoard[row][c] = "X";
             }
         }
+        
+        //Sub
+        
+        int min3 = 8;
+        int max3 = 8;
+        //Row & Column
+        row = (int)(Math.random() * (max3 - min3 + 1) + min3);
+        column = (int)(Math.random() * (max3 - min3 + 1) + min3);
+        //Verticle or Horizonal
+        direction = (int)(Math.random() * (1 - 0 + 1) + 0);
+        //Start position
+        start = 4; //(int)(Math.random() * (length - (s + 1) + 1) + s);
+        //Inputs position
+        if (direction == 0) {
+            for (int r = start; r < (start + 3); r++) {
+                hiddenBoard[r][column] = "S";
+            }
+        }
+        else if (direction == 1) {
+            for (int c = start; c < (start + 3); c++) {
+                hiddenBoard[row][c] = "S";
+            }
+        }
+        //Destroyer
+        
+        int min4 = 6;
+        int max4 = 7;
+        //Row & Column
+        row = (int)(Math.random() * (max4 - min4 + 1) + min4);
+        column = (int)(Math.random() * (max4 - min4 + 1) + min4);
+        //Verticle or Horizonal
+        direction = (int)(Math.random() * (1 - 0 + 1) + 0);
+        //Start position
+        start = 5; //(int)(Math.random() * (length - (s + 1) + 1) + s);
+        //Inputs position
+        if (direction == 0) {
+            for (int r = start; r < (start + 3); r++) {
+                hiddenBoard[r][column] = "D";
+            }
+        }
+        else if (direction == 1) {
+            for (int c = start; c < (start + 3); c++) {
+                hiddenBoard[row][c] = "D";
+            }
+        }
+        //Patrol Boat
+        
+        int min5 = 8;
+        int max5 = 8;
+        //Row & Column
+        row = (int)(Math.random() * (max5 - min5 + 1) + min5);
+        column = (int)(Math.random() * (max5 - min5 + 1) + min5);
+        //Verticle or Horizonal
+        direction = (int)(Math.random() * (1 - 0 + 1) + 0);
+        //Start position
+        start = 7; //(int)(Math.random() * (length - (s + 1) + 1) + s);
+        //Inputs position
+        if (direction == 0) {
+            for (int r = start; r < (start + 2); r++) {
+                hiddenBoard[r][column] = "P";
+            }
+        }
+        else if (direction == 1) {
+            for (int c = start; c < (start + 2); c++) {
+                hiddenBoard[row][c] = "P";
+            }
+        }
     }
-
+    
     static void firer() {
         System.out.println("-----------Fire Control------------");
         System.out.print("x-coordinate fire position: ");
@@ -140,11 +295,42 @@ public class BattleshipMachine
         clear();
         if (hiddenBoard[x][y].equals("X")) {
             System.out.println("Last Shot: Hit!");
+            System.out.println("Type: Battleship");
             hiddenBoard[x][y] = "F";
             board[x][y] = " Hit ";
+            battleCount++;
+        }
+        else if (hiddenBoard[x][y].equals("C")) {
+            System.out.println("Last Shot: Hit!");
+            System.out.println("Type: Carrier");
+            hiddenBoard[x][y] = "F";
+            board[x][y] = " Hit ";
+            carrierCount++;
+        }
+        else if (hiddenBoard[x][y].equals("S")) {
+            System.out.println("Last Shot: Hit!");
+            System.out.println("Type: Submarine");
+            hiddenBoard[x][y] = "F";
+            board[x][y] = " Hit ";
+            subCount++;
+        }
+        else if (hiddenBoard[x][y].equals("D")) {
+            System.out.println("Last Shot: Hit!");
+            System.out.println("Type: Destroyer");
+            hiddenBoard[x][y] = "F";
+            board[x][y] = " Hit ";
+            destroyerCount++;
+        }
+        else if (hiddenBoard[x][y].equals("P")) {
+            System.out.println("Last Shot: Hit!");
+            System.out.println("Type: Patrol Boat");
+            hiddenBoard[x][y] = "F";
+            board[x][y] = " Hit ";
+            patrolCount++;
         }
         else if (hiddenBoard[x][y].equals(" ")) {
             System.out.println("Last Shot: Miss!");
+            System.out.println("Type:");
             board[x][y] = "Empty";
         }
         else {
@@ -154,37 +340,44 @@ public class BattleshipMachine
         }
         i++;
         printBoard();
+        printList();
         //printKey();
     }
     
     static void fireControl() {
         printBoard();
+        printList();
         //printKey();
         do {
             firer();
         }
         //essentially any X exists
         while 
-        (hiddenBoard[0][column].equals("X") || hiddenBoard[1][column].equals("X")
-        || hiddenBoard[2][column].equals("X") || hiddenBoard[3][column].equals("X") 
-        || hiddenBoard[4][column].equals("X") || hiddenBoard[5][column].equals("X") 
-        || hiddenBoard[6][column].equals("X") || hiddenBoard[7][column].equals("X") 
-        || hiddenBoard[8][column].equals("X") || hiddenBoard[row][0].equals("X") 
-        || hiddenBoard[row][1].equals("X") || hiddenBoard[row][2].equals("X") 
-        || hiddenBoard[row][3].equals("X") || hiddenBoard[row][4].equals("X")
-        || hiddenBoard[row][5].equals("X") || hiddenBoard[row][6].equals("X")
-        || hiddenBoard[row][7].equals("X") || hiddenBoard[row][8].equals("X"));
+        (carrierStatus.equals("Alive") || battleStatus.equals("Alive") ||
+        subStatus.equals("Alive") || destroyerStatus.equals("Alive") ||
+        patrolStatus.equals("Alive"));
         clear();
-        System.out.println("You have sunken the enemy Battleship in " + i + " turns");
+        System.out.println("You have sunken the enemy Ships in " + i + " turns");
         System.out.println("GAME OVER");
     }
     
     public static void main(String[] args) {
         do {  
             i = 0;
+            carrierCount = 0;
+            carrierStatus = "Alive";
+            battleCount = 0;
+            battleStatus = "Alive";
+            subCount = 0;
+            subStatus = "Alive";
+            destroyerCount = 0;
+            destroyerStatus = "Alive";
+            patrolCount = 0;
+            patrolStatus = "Alive";
+            
             rules();
             createBoard();
-            spawnShip();
+            spawnShips();
             clear();
             fireControl();
             //repeater
